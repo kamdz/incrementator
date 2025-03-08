@@ -4,7 +4,7 @@ describe('incrementator', () => {
   it('should iterate through a single parameter with numeric step', () => {
     const results: { x: number }[] = [];
 
-    incrementator({ x: { start: 1, end: 5, step: 1 } }, values => {
+    incrementator({ x: { start: 1, stop: 5, step: 1 } }, values => {
       results.push({ ...values });
     });
 
@@ -14,21 +14,21 @@ describe('incrementator', () => {
   it('should handle descending ranges', () => {
     const results: { x: number }[] = [];
 
-    incrementator({ x: { start: 5, end: 1, step: -1 } }, values => {
+    incrementator({ x: { start: 5, stop: 1, step: -1 } }, values => {
       results.push({ ...values });
     });
 
     expect(results).toEqual([{ x: 5 }, { x: 4 }, { x: 3 }, { x: 2 }, { x: 1 }]);
   });
 
-  it('should handle function-based end condition', () => {
+  it('should handle function-based stop condition', () => {
     const results: { x: number }[] = [];
 
     incrementator(
       {
         x: {
           start: 1,
-          end: val => val < 5,
+          stop: val => val < 5,
           step: 1
         }
       },
@@ -43,7 +43,7 @@ describe('incrementator', () => {
   it('should handle function-based step', () => {
     const results: { x: number }[] = [];
 
-    incrementator({ x: { start: 1, end: 8, step: n => n * 2 } }, values => {
+    incrementator({ x: { start: 1, stop: 8, step: n => n * 2 } }, values => {
       results.push({ ...values });
     });
 
@@ -55,8 +55,8 @@ describe('incrementator', () => {
 
     incrementator(
       {
-        x: { start: 1, end: 3, step: 1 },
-        y: { start: 10, end: 12, step: 1 }
+        x: { start: 1, stop: 3, step: 1 },
+        y: { start: 10, stop: 12, step: 1 }
       },
       values => {
         results.push({ ...values });
@@ -81,8 +81,8 @@ describe('incrementator', () => {
 
     incrementator(
       {
-        up: { start: 1, end: 3, step: 1 },
-        down: { start: 3, end: 1, step: -1 }
+        up: { start: 1, stop: 3, step: 1 },
+        down: { start: 3, stop: 1, step: -1 }
       },
       values => {
         results.push({ ...values });
@@ -107,9 +107,9 @@ describe('incrementator', () => {
 
     incrementator(
       {
-        a: { start: 0, end: 1, step: 1 },
-        b: { start: 10, end: 20, step: 5 },
-        c: { start: 100, end: 10, step: n => n / 2 }
+        a: { start: 0, stop: 1, step: 1 },
+        b: { start: 10, stop: 20, step: 5 },
+        c: { start: 100, stop: 10, step: n => n / 2 }
       },
       values => {
         results.push({ ...values });
@@ -146,7 +146,7 @@ describe('incrementator', () => {
 
   it('should handle floating point steps', () => {
     const results: { x: number }[] = [];
-    incrementator({ x: { start: 1, end: 2, step: 0.5 } }, values => {
+    incrementator({ x: { start: 1, stop: 2, step: 0.5 } }, values => {
       results.push({ ...values });
     });
 
@@ -164,8 +164,8 @@ describe('incrementator', () => {
 
     incrementator(
       {
-        linear: { start: 0, end: 4, step: 1 },
-        exponential: { start: 1, end: 8, step: val => val * 2 }
+        linear: { start: 0, stop: 4, step: 1 },
+        exponential: { start: 1, stop: 8, step: val => val * 2 }
       },
       values => {
         results.push({ ...values });
@@ -199,21 +199,21 @@ describe('incrementator', () => {
   it('should handle zero step without infinite loop', () => {
     const results: { x: number }[] = [];
 
-    incrementator({ x: { start: 5, end: 10, step: 0 } }, values => {
+    incrementator({ x: { start: 5, stop: 10, step: 0 } }, values => {
       results.push({ ...values });
     });
 
     expect(results).toEqual([{ x: 5 }]);
   });
 
-  it('should handle function-based end condition that is immediately false', () => {
+  it('should handle function-based stop condition that is immediately false', () => {
     const results: { x: number }[] = [];
 
     incrementator(
       {
         x: {
           start: 1,
-          end: () => false,
+          stop: () => false,
           step: 1
         }
       },

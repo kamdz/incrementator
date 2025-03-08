@@ -4,9 +4,9 @@ export interface IncrementatorConfig {
    */
   start: number;
   /**
-   * Either a specific end value or a function that determines when to stop
+   * Either a specific stop value or a function that determines when to stop
    */
-  end: number | ((currentValue: number) => boolean);
+  stop: number | ((currentValue: number) => boolean);
   /**
    * Either a fixed step value or a function to calculate the next value
    */
@@ -21,12 +21,12 @@ export type IncrementatorResult<T extends Record<string, IncrementatorConfig>> =
   [K in keyof T]: number;
 };
 
-function generateSequence({ start, end, step }: IncrementatorConfig): number[] {
+function generateSequence({ start, stop, step }: IncrementatorConfig): number[] {
   const sequence: number[] = [];
-  const isEnd = typeof end === 'function' ? end : (value: number) => (start <= end ? value <= end : value >= end);
+  const isStop = typeof stop === 'function' ? stop : (value: number) => (start <= stop ? value <= stop : value >= stop);
   const getNext = (value: number) => (typeof step === 'number' ? value + step : step(value));
 
-  for (let value = start; isEnd(value); value = getNext(value)) {
+  for (let value = start; isStop(value); value = getNext(value)) {
     sequence.push(value);
     if (value === getNext(value)) break;
   }
@@ -38,15 +38,15 @@ function generateSequence({ start, end, step }: IncrementatorConfig): number[] {
  * Iterates through combinations of different parameters with specified steps
  *
  * @param config - Object with parameters configuration.
- *                 Each parameter has start, end, and step properties.
+ *                 Each parameter has start, stop, and step properties.
  * @param callback - Function called for each combination of parameter values
  *
  * @example
  * ```typescript
  * incrementator(
  *   {
- *     x: { start: 0, end: 2, step: 1 },
- *     y: { start: 5, end: 3, step: -0.5 }
+ *     x: { start: 0, stop: 2, step: 1 },
+ *     y: { start: 5, stop: 3, step: -0.5 }
  *   },
  *   ({ x, y }) => console.log(`x=${x}, y=${y}`)
  * );
