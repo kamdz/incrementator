@@ -1,6 +1,9 @@
 # 🔂 incrementator  
 
-A lightweight TypeScript utility for iterating over multiple numeric parameters with flexible control.
+A lightweight TypeScript utility for iterating over multiple numeric parameters with flexible control. 
+
+The `incrementator` utility can be seen as a replacement for traditional nested loops.
+Using `incrementator` simplifies the iteration process, especially when working with multiple parameters and dynamic step functions.
 
 ## 🚀 Features  
 
@@ -35,6 +38,13 @@ incrementator(
 // x=0, y=3
 // x=1, y=5
 
+// Equivalent code with for loops
+// for (let x = 0; x < 2; x++) {
+//   for (let y = 5; y >= 3; y -= 0.5) {
+//     console.log(`x=${x}, y=${y}`);
+//   }
+// }
+
 incrementator(
   {
     a: { start: 1, stop: 10, step: (current) => current * 2 },
@@ -46,6 +56,13 @@ incrementator(
 // a=2
 // a=4
 // a=8
+
+// Equivalent code with while loop
+// let a = 1;
+// while (a < 10) {
+//   console.log(`a=${a}`);
+//   a *= 2;
+// }
 ```
 
 ## 🔧 API  
